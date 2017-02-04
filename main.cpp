@@ -28,8 +28,6 @@ void test_sm() {
 	s.add(2,0,15);
 	s.add(0,4,25);
 
-	s.print_all();
-
 	cout << endl;
 
 	for(int i = 0; i < m.get_rows(); i++) {
@@ -42,14 +40,11 @@ void test_sm() {
 
 	cout << endl;
 
-	m.print_all();
 	cout << m.get_count() << endl;;
 	cout << (0 == m.get_dafault_value() ? "true" : "false") << endl;
 	cout << (1 == m.get_dafault_value() ? "true" : "false") << endl;
 	cout << endl;
 	cout << endl;
-
-
 
 	m = m2;
 
@@ -63,7 +58,6 @@ void test_sm() {
 
 	cout << endl;
 
-	m.print_all();
 	cout << m.get_count() << endl;;
 	cout << (1 == m.get_dafault_value() ? "true" : "false") << endl;
 	cout << (0 == m.get_dafault_value() ? "true" : "false") << endl;
@@ -76,6 +70,19 @@ void test_sm() {
     for(; i != ie; i++){
 		cout << "[x:" << i->x << ", y:" << i->y << ", val:" << i->value << "]" << endl;
     }
+
+    cout << endl << endl;
+    cout << s << endl;
+
+    cout << endl << endl << "Static Cast: " << endl;
+
+    SparseMatrix<double> m3(s);
+    cout << m3 << endl;
+
+    cout << endl << endl << "Copy constructor: " << endl;
+
+    SparseMatrix<int> m4(s);
+    cout << m4 << endl;
 }
 
 int main() {

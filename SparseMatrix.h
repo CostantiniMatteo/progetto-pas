@@ -7,41 +7,82 @@
 #include <cstddef>
 #include <cassert>
 
+/**
+	Definizione di una classe templata SparseMatrix che rappresenta una
+	matrice sparsa utilizzando una lista per salvare solo i valori della
+	matrice che sono diversi dal valore di default.
+
+*/
 template <typename T>
 class SparseMatrix {
 public:
 	typedef T value_type;
 
+	/**
+		Struttura che rappresenta una casella della matrice.
+	*/
 	struct element {
-		const size_t x;
-		const size_t y;
-		value_type value;
+		const size_t x; ///< Riga della casella
+		const size_t y; ///< Colonna della casella
+		value_type value; ///< Valore contenuto
 
+
+		/**
+			Costruttore di un element.
+			@param x riga della casella
+			@param y colonna della casella
+			@param v valore della casella
+		*/
 		element(size_t x, size_t y, value_type v) : x(x), y(y), value(v) {}
 	};
 
 
 private:
+
+	/**
+		Struttura che rappresenta un nodo della lista utilizzata per salvare
+		i valori della matrice.
+	*/
 	struct node {
-		element *value;
-		node *next;
+		element *value; ///< puntatore alla struttura che rappresenta una casella
+		node *next; ///< puntatore al nodo successivo
 
-		node() : next(0) {}
+		/**
+			Costruttore.
+			Crea un nodo con valore nullo e senza nodo successivo 
+		*/
+		node() : next(0), element(0) {}
 
+		/**
+			Costruttore di un nodo con un element.
+			@param x la riga della casella
+			@param y la colonna della casella
+			@param val il valore della casella
+			@param n il puntatore al nodo successivo. Di default il nodo non punta a nulla
+		*/
 		node(size_t x, size_t y, value_type val, node *n = 0) : value(new element(x, y, val)), next(n) {}
 		
+
+		/**
+			Distruttore
+		*/
 		~node() {
 			delete value;
 		}
 	};
 
 
-	node *head;
-	size_t n_rows;
-	size_t n_col;
-	size_t count;
-	value_type default_value;
+	node *head; ///< puntatore alla testa della lista
+	size_t n_rows; ///< numero di righe della matrice
+	size_t n_col; ///< numero di colonne della radice
+	size_t count; ///< numero di elementi contenuti nella lista
+	value_type default_value; ///< il valore delle caselle non contenute nella lista
 
+
+	/**
+		Funzione di appoggio che cancella un nodo della lista e tutti i suoi
+		successori ricorsivamente.
+	*/
 	void _clear(node *n) {
 		if(n == 0) {
 			return;
@@ -53,23 +94,41 @@ private:
 		_clear(tmp);
 	}
 
+
+	/**
+		Costruttore senza parametri privato. In fase di costruzione si deve
+		specificare la dimensione della matrice.
+	*/
 	SparseMatrix() {}
 
 	
 public:
 
+	/**
+		Costruttore principale. Costruisce una matrice NxM con tutti i valori
+		settati al valore di default.
+		@param n numero di righe della matrice
+		@param m numero di colonne della matrice
+		@param def valore di default
+	*/
 	SparseMatrix(size_t n, size_t m, value_type def) : count(0),
 		default_value(def), n_col(m), n_rows(n), head(0) {}
 
 
+	/**
+		Copy constructor.
+		@param other matrice da copiare
+	*/
 	SparseMatrix(const SparseMatrix &other) : count(0),
 		default_value(other.default_value), n_col(other.n_col), n_rows(other.n_rows), head(0) {
-		const node *tmp = other.head;
+		
+		const_iterator i = other.begin();
+		const_iterator ie = other.end();
 
 		try {
-			while(tmp != 0) {
-				add(tmp->value->x, tmp->value->y, tmp->value->value);
-				tmp = tmp->next;
+			while(i != ie) {
+				add(i->x, i->y, i->value);
+				i++;
 			}
 		} catch(...) {
 			clear();
@@ -77,16 +136,46 @@ public:
 		}
 	}
 
-/*
-	template <typename Q>
-	SparseMatrix(const SparseMatrix<Q> &other);
-*/
 
+	/**
+		Costruttore che costruisce una matrice a partire da una matrice di tipo
+		diverso. Il controllo della convertibilita' dei tipo e svolto dal compilatore
+		@param other la matrice da copiare convertendo i tipi
+	*/
+	template <typename Q>
+	SparseMatrix(const SparseMatrix<Q> &other) : count(0),
+		default_value(other.get_dafault_value()), n_col(other.get_columns()),
+		n_rows(other.get_rows()), head(0){
+
+		typename SparseMatrix<Q>::const_iterator i = other.begin();
+		typename SparseMatrix<Q>::const_iterator ie = other.end();
+
+		try {
+			while(i != ie) {
+				add(i->x, i->y, static_cast<T>(i->value));
+				i++;
+			}
+		} catch(...) {
+			clear();
+			throw;
+		}
+	}
+
+
+	/**
+		Distruttore
+	*/
 	~SparseMatrix() {
 		clear();
 	}
 
 
+
+	/**
+		Operatore di assegnamento
+		@param other matrice da copiare
+		@return la matrice modificata
+	*/
 	SparseMatrix &operator=(const SparseMatrix &other) {
 		if(this != &other) {
 			SparseMatrix tmp(other);
@@ -101,25 +190,57 @@ public:
 	}
 
 
+	/**
+		Ritorna il numero di righe della matrice
+		@return il numero righe della matrice
+	*/
 	size_t get_rows() const {
 		return n_rows;
 	}
 
+	/**
+		Ritorna il numero di colonne della matrice
+		@return il numero colonne della matrice
+	*/
 	size_t get_columns() const {
 		return n_col;
 	}
 
 
+	/**
+		Ritorna il numero di valori che sono stati inseriti nella matrice.
+		@return il numero di valori inseriti nella matrice.
+	*/
 	size_t get_count() const {
 		return count;
 	}
 
 
+	/**
+		Ritorna il valore di default della matrice
+		@return il valore di default della matrice
+	*/
 	const value_type &get_dafault_value() const {
 		return default_value;
 	}
 
 
+	/**
+		Modifica il valore di default della matrice
+		@param val il nuovo valore di default
+	*/
+	void set_default_value(value_type val) {
+		default_value = val;
+
+	}
+
+
+	/**
+		Aggiunge un valore alla matrice
+		@param x riga della casella da aggiungere
+		@param y colonna della casella da aggiungere
+		@param value valore della casella da aggiungere
+	*/
 	void add(size_t x, size_t y, const value_type &value) {
 		assert(x < n_rows);
 		assert(y < n_col);
@@ -162,6 +283,12 @@ public:
 	}
 
 
+	/**
+		Ritorna il valore contenuto nella casella [x,y]
+		@param x la riga della casella
+		@param y la colonna della casella
+		@return il valore contenuto nella casella
+	*/
 	const value_type operator()(size_t x, size_t y) const {
 		assert(x < n_rows);
 		assert(y < n_col);
@@ -178,22 +305,24 @@ public:
 		}
 	}
 
-	//int eval() const();
+	/**
+		Ritorna il numero di elementi della matrice che soddisfano il predicato
+		@param predicato predicato da verificare
+		@return il numero di elementi della matrice che soddisfano il predicato
+	*/
+	int eval(int predicato) const {
+		return -1;
+	}
 
+
+	/**
+		Funzione che cancella tutti i valori precedentemente inseriti nella
+		matrice. Tutti i valori tornano ad essere il valore di default.
+	*/
 	void clear() {
 		_clear(head);
 		count = 0;
 	}
-
-	void print_all() {
-		node* current = head;
-
-		while(current != 0) {
-			std::cout << "[x:" << current->value->x << ", y:" << current->value->y << ", val:" << current->value->value << "]" << std::endl;
-			current = current->next;
-		}
-	}
-
 
 
 
@@ -265,12 +394,18 @@ public:
 		
 	}; // classe const_iterator
 	
-	// Ritorna l'iteratore all'inizio della sequenza dati
+	/**
+		Ritorna un iteratore alla prima casella memorizzata
+		@return iteratore alla prima casella memorizzata
+	*/
 	iterator begin() {
 		return iterator(head);
 	}
 	
-	// Ritorna l'iteratore alla fine della sequenza dati
+	/**
+		Ritorna un iteratore alla file della sequenza di caselle memorizzate
+		@return iteratore alla fine della sequenza di caselle memorizzate
+	*/
 	iterator end() {
 		return iterator(0);
 	}
@@ -349,12 +484,18 @@ public:
 		
 	}; // classe const_iterator
 	
-	// Ritorna l'iteratore all'inizio della sequenza dati
+	/**
+		Ritorna un iteratore alla prima casella memorizzata
+		@return iteratore alla prima casella memorizzata
+	*/
 	const_iterator begin() const {
 		return const_iterator(head);
 	}
 	
-	// Ritorna l'iteratore alla fine della sequenza dati
+	/**
+		Ritorna un iteratore alla file della sequenza di caselle memorizzate
+		@return iteratore alla fine della sequenza di caselle memorizzate
+	*/
 	const_iterator end() const {
 		return const_iterator(0);
 	}
@@ -365,5 +506,35 @@ public:
 	
 };
 
+
+template <typename T>
+std::ostream& operator<<(std::ostream &os, const SparseMatrix<T>& sm) {
+
+	typename SparseMatrix<T>::const_iterator i, ie;
+
+	i = sm.begin();
+	ie = sm.end();
+
+	while(i != ie) {
+		os << "[x : " << i->x
+			<< ", y : " << i->y
+			<< ", value : " << i->value << "]"
+			<< std::endl;
+		i++;
+	}
+
+	return os;
+}
+
+/*
+template <typename T>
+std::ostream& operator<<(std::ostream &os, SparseMatrix<T>::element& elem) {
+
+	os << elem.x << " " << elem.y << " " << elem.value << std::endl;
+
+	return os;
+
+}
+*/
 
 #endif
