@@ -1,5 +1,8 @@
-main:
-	g++ *.cpp -o main.exe
+main.exe: main.cpp
+	g++ main.cpp -o main.exe
 
-exec: main
+excec: clean main.exe
 	./main.exe
+
+clean:
+	rm main.exe

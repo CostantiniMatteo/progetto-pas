@@ -305,15 +305,6 @@ public:
 		}
 	}
 
-	/**
-		Ritorna il numero di elementi della matrice che soddisfano il predicato
-		@param predicato predicato da verificare
-		@return il numero di elementi della matrice che soddisfano il predicato
-	*/
-	int eval(int predicato) const {
-		return -1;
-	}
-
 
 	/**
 		Funzione che cancella tutti i valori precedentemente inseriti nella
@@ -511,19 +502,44 @@ template <typename T>
 std::ostream& operator<<(std::ostream &os, const SparseMatrix<T>& sm) {
 
 	typename SparseMatrix<T>::const_iterator i, ie;
-
 	i = sm.begin();
 	ie = sm.end();
 
 	while(i != ie) {
-		os << "[x : " << i->x
+		os << "{x : " << i->x
 			<< ", y : " << i->y
-			<< ", value : " << i->value << "]"
+			<< ", value : " << i->value << "}"
 			<< std::endl;
 		i++;
 	}
 
 	return os;
+}
+
+/**
+	Ritorna il numero di elementi della matrice che soddisfano il predicato
+	@param sm matrice sparsa
+	@param funct predicato da verificare
+	@return il numero di elementi della matrice che soddisfano il predicato
+*/
+template<typename T, typename P>
+int eval(const SparseMatrix<T> &sm, P funct) {
+	int result = 0;
+
+	typename SparseMatrix<T>::const_iterator i, ie;
+	i = sm.begin();
+	ie = sm.end();;
+
+	while(i != ie) {
+		if(funct(i->value))
+			result++;
+		i++;
+	}
+
+	if(funct(sm.get_dafault_value()))
+		result += (sm.get_rows() * sm.get_columns()) - sm.get_count();
+
+	return result;
 }
 
 /*

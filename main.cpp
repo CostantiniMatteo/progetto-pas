@@ -3,6 +3,15 @@
 
 using namespace std;
 
+struct funtore {
+	int init;
+public:
+	explicit funtore(int val) : init(val) {}
+	bool operator()(int i) const {
+		return (i == init);
+	}
+};
+
 void test_sm() {
 	SparseMatrix<int> m(10,10,0);
 	SparseMatrix<int> m2(5,5,1);
@@ -14,6 +23,7 @@ void test_sm() {
 	m.add(0,0,7);
 	m.add(1,2,3);
 	m.add(2,2,9);
+	m.add(2,2,10);
 
 	m2.add(0,0,3);
 
@@ -27,16 +37,17 @@ void test_sm() {
 	s.add(2,4,17);
 	s.add(2,0,15);
 	s.add(0,4,25);
+	s.add(0,4,0);
 
 	cout << endl;
-
+	/*
 	for(int i = 0; i < m.get_rows(); i++) {
 		for(int j = 0; j < m.get_columns(); j++) {
 			cout << m(i,j) << " ";
 			m(i,j);
 		}
 		cout << endl;
-	}
+	}*/
 
 	cout << endl;
 
@@ -83,6 +94,18 @@ void test_sm() {
 
     SparseMatrix<int> m4(s);
     cout << m4 << endl;
+    cout << endl << endl << endl;
+    for(int i = 0; i < m.get_rows(); i++) {
+		for(int j = 0; j < m.get_columns(); j++) {
+			cout << s(i,j) << " ";
+		}
+		cout << endl;
+	}
+	cout << endl;
+    cout << endl;
+    funtore eq_zero(0);
+    cout << eq_zero(1) << " " << eq_zero(0) << endl;
+    cout << eval(s, eq_zero) << endl;
 }
 
 int main() {
