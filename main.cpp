@@ -29,6 +29,7 @@ public:
 int main() {
 	
 	SparseMatrix<int> s(5,5,0);
+	SparseMatrix<int> m;
 	
 	s.add(3,3,13);
 	s.add(1,4,2);

@@ -94,13 +94,6 @@ private:
 		_clear(tmp);
 	}
 
-
-	/**
-		Costruttore senza parametri privato. In fase di costruzione si deve
-		specificare la dimensione della matrice.
-	*/
-	SparseMatrix() {}
-
 	
 public:
 
