@@ -112,7 +112,10 @@ public:
 		@param def valore di default
 	*/
 	SparseMatrix(size_t n, size_t m, value_type def) : count(0),
-		default_value(def), n_col(m), n_rows(n), head(0) {}
+		default_value(def), n_col(m), n_rows(n), head(0) {
+			assert(n > 0);
+			assert(m > 0);
+		}
 
 
 	/**
@@ -120,7 +123,7 @@ public:
 		@param other matrice da copiare
 	*/
 	SparseMatrix(const SparseMatrix &other) : count(0),
-		default_value(other.default_value), n_col(other.n_col), n_rows(other.n_rows), head(0) {
+		default_value(static_cast<T>(other.default_value)), n_col(other.n_col), n_rows(other.n_rows), head(0) {
 		
 		const_iterator i = other.begin();
 		const_iterator ie = other.end();
@@ -231,7 +234,6 @@ public:
 	*/
 	void set_default_value(value_type val) {
 		default_value = val;
-
 	}
 
 
@@ -296,6 +298,9 @@ public:
 		node *current = head;
 		while(current != 0 && (current->value->x != x || current->value->y != y)) {
 			current = current->next;
+
+			if(current->value->x > x || (current->value->x == x && current->value->y > y))
+				return default_value;
 		}
 
 		if(current == 0) {
@@ -318,7 +323,7 @@ public:
 
 
 // ===================================================================
-// ==ITERATOR========================================================
+// ==ITERATOR=========================================================
 // ===================================================================
 
 	class const_iterator;
