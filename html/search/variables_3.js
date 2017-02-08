@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['init',['init',['../structfuntore.html#a75aaf92c6408af39c3d66041d9df8c12',1,'funtore']]]
+  ['init',['init',['../structkeep__if__equal.html#a8d8bf3f613afc717251ba1505f300488',1,'keep_if_equal']]]
 ];

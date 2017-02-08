@@ -2,10 +2,10 @@
 #define SPARSE_MATRIX_H
 
 #include <algorithm>
-#include <iostream>
 #include <iterator>
 #include <cstddef>
 #include <cassert>
+#include <iostream>
 
 /**
 	Definizione di una classe templata SparseMatrix che rappresenta una
@@ -35,7 +35,13 @@ public:
 		*/
 		element(size_t x, size_t y, value_type v) : x(x), y(y), value(v) {}
 
-		friend std::ostream& operator<<(std::ostream& os, const element& e);
+		friend std::ostream& operator<<(std::ostream& os, const element& e) {
+			os << "{x : " << e.x
+				<< ", y : " << e.y
+				<< ", value : " << e.value << "}";
+
+			return os;
+		}
 	};
 
 
@@ -291,18 +297,15 @@ public:
 		assert(y < n_col);
 
 		node *current = head;
-		while(current != 0 && (current->value->x != x || current->value->y != y)) {
+
+		while(current != 0) {
+			if(current->value->x == x && current->value->y == y)
+				return current->value->	value;
 			current = current->next;
-
-			if(current->value->x > x || (current->value->x == x && current->value->y > y))
-				return default_value;
 		}
 
-		if(current == 0) {
-			return default_value;
-		} else {
-			return current->value->value;
-		}
+		return default_value;
+
 	}
 
 
@@ -540,16 +543,6 @@ int eval(const SparseMatrix<T> &sm, P funct) {
 
 	return result;
 }
-
-template<typename T>
-std::ostream& operator<<(std::ostream& os, const SparseMatrix<T>::element& e) {
-			os << "{x : " << e.x
-				<< ", y : " << e.y
-				<< ", value : " << e.value << "}";
-
-			return os;
-		}
-
 
 
 #endif

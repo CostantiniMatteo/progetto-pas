@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['funtore',['funtore',['../structfuntore.html',1,'']]]
+  ['iterator',['iterator',['../class_sparse_matrix_1_1iterator.html',1,'SparseMatrix']]]
 ];

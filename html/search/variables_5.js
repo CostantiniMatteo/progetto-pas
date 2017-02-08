@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['value',['value',['../struct_sparse_matrix_1_1element.html#aca3703fc142ba0c4d63cf84fe50b4e30',1,'SparseMatrix::element::value()'],['../struct_sparse_matrix_1_1node.html#addc12f666204d2658cfb897dbc33205e',1,'SparseMatrix::node::value()']]]
+  ['s1',['s1',['../structpair__string.html#af1fab7d5661f4f3ea5f2075147e495c4',1,'pair_string']]],
+  ['s2',['s2',['../structpair__string.html#ad28eb214edf19f20ff7ed7277be8e78d',1,'pair_string']]]
 ];

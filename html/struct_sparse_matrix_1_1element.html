@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.11"/>
-<title>My Project: SparseMatrix&lt; T &gt;::element Struct Reference</title>
+<title>SparseMatrix: SparseMatrix&lt; T &gt;::element Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +23,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">My Project
+   <div id="projectname">SparseMatrix
    </div>
   </td>
  </tr>
@@ -88,6 +88,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#friends">Friends</a> &#124;
 <a href="struct_sparse_matrix_1_1element-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">SparseMatrix&lt; T &gt;::element Struct Reference</div>  </div>
@@ -112,6 +113,11 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:aca3703fc142ba0c4d63cf84fe50b4e30"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_sparse_matrix.html#ad3369b212856bf3d6811dbda8be8e013">value_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_sparse_matrix_1_1element.html#aca3703fc142ba0c4d63cf84fe50b4e30">value</a></td></tr>
 <tr class="memdesc:aca3703fc142ba0c4d63cf84fe50b4e30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Valore contenuto.  <a href="#aca3703fc142ba0c4d63cf84fe50b4e30">More...</a><br /></td></tr>
 <tr class="separator:aca3703fc142ba0c4d63cf84fe50b4e30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
+Friends</h2></td></tr>
+<tr class="memitem:aec34156b3910eda665d18dcfe5e2cfe5"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_sparse_matrix_1_1element.html#aec34156b3910eda665d18dcfe5e2cfe5">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="struct_sparse_matrix_1_1element.html">element</a> &amp;e)</td></tr>
+<tr class="separator:aec34156b3910eda665d18dcfe5e2cfe5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename T&gt;<br />
@@ -176,6 +182,45 @@ template&lt;typename T&gt; </div>
 </div><!-- fragment -->
 </div>
 </div>
+<h2 class="groupheader">Friends And Related Function Documentation</h2>
+<a class="anchor" id="aec34156b3910eda665d18dcfe5e2cfe5"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream&amp; operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>os</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="struct_sparse_matrix_1_1element.html">element</a> &amp;&#160;</td>
+          <td class="paramname"><em>e</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="_sparse_matrix_8h_source.html#l00038">38</a> of file <a class="el" href="_sparse_matrix_8h_source.html">SparseMatrix.h</a>.</p>
+<div class="fragment"><div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;                                                                        {</div><div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;            os &lt;&lt; <span class="stringliteral">&quot;{x : &quot;</span> &lt;&lt; e.x</div><div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;                &lt;&lt; <span class="stringliteral">&quot;, y : &quot;</span> &lt;&lt; e.y</div><div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;                &lt;&lt; <span class="stringliteral">&quot;, value : &quot;</span> &lt;&lt; e.value &lt;&lt; <span class="stringliteral">&quot;}&quot;</span>;</div><div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div><div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;            <span class="keywordflow">return</span> os;</div><div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        }</div></div><!-- fragment -->
+</div>
+</div>
 <h2 class="groupheader">Member Data Documentation</h2>
 <a class="anchor" id="aca3703fc142ba0c4d63cf84fe50b4e30"></a>
 <div class="memitem">
@@ -237,7 +282,7 @@ template&lt;typename T&gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Feb 5 2017 10:41:28 for My Project by &#160;<a href="http://www.doxygen.org/index.html">
+Generated by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.11
 </small></address>
