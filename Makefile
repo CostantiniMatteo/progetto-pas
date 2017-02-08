@@ -5,4 +5,4 @@ excec: clean main.exe
 	./main.exe
 
 clean:
-	rm main.exe
+	rm *.exe

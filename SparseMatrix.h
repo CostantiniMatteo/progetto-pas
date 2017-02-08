@@ -34,6 +34,8 @@ public:
 			@param v valore della casella
 		*/
 		element(size_t x, size_t y, value_type v) : x(x), y(y), value(v) {}
+
+		friend std::ostream& operator<<(std::ostream& os, const element& e);
 	};
 
 
@@ -140,7 +142,7 @@ public:
 	*/
 	template <typename Q>
 	SparseMatrix(const SparseMatrix<Q> &other) : count(0),
-		default_value(other.get_dafault_value()), n_col(other.get_columns()),
+		default_value(other.get_default_value()), n_col(other.get_columns()),
 		n_rows(other.get_rows()), head(0){
 
 		typename SparseMatrix<Q>::const_iterator i = other.begin();
@@ -216,7 +218,7 @@ public:
 		Ritorna il valore di default della matrice
 		@return il valore di default della matrice
 	*/
-	const value_type &get_dafault_value() const {
+	const value_type &get_default_value() const {
 		return default_value;
 	}
 
@@ -311,6 +313,7 @@ public:
 	void clear() {
 		_clear(head);
 		count = 0;
+		head = 0;
 	}
 
 
@@ -504,15 +507,13 @@ std::ostream& operator<<(std::ostream &os, const SparseMatrix<T>& sm) {
 	ie = sm.end();
 
 	while(i != ie) {
-		os << "{x : " << i->x
-			<< ", y : " << i->y
-			<< ", value : " << i->value << "}"
-			<< std::endl;
+		os << *i << std::endl;
 		i++;
 	}
 
 	return os;
 }
+
 
 /**
 	Ritorna il numero di elementi della matrice che soddisfano il predicato
@@ -534,21 +535,21 @@ int eval(const SparseMatrix<T> &sm, P funct) {
 		i++;
 	}
 
-	if(funct(sm.get_dafault_value()))
+	if(funct(sm.get_default_value()))
 		result += (sm.get_rows() * sm.get_columns()) - sm.get_count();
 
 	return result;
 }
 
-/*
-template <typename T>
-std::ostream& operator<<(std::ostream &os, SparseMatrix<T>::element& elem) {
+template<typename T>
+std::ostream& operator<<(std::ostream& os, const SparseMatrix<T>::element& e) {
+			os << "{x : " << e.x
+				<< ", y : " << e.y
+				<< ", value : " << e.value << "}";
 
-	os << elem.x << " " << elem.y << " " << elem.value << std::endl;
+			return os;
+		}
 
-	return os;
 
-}
-*/
 
 #endif
