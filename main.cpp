@@ -1,6 +1,7 @@
 #include "SparseMatrix.h"
 #include <cassert>
 #include <iostream>
+#include <math.h>
 
 using namespace std;
 
@@ -67,18 +68,27 @@ struct pair_string {
 
 struct keep_if_equal {
 	int init;
-public:
+
 	explicit keep_if_equal(int val) : init(val) {}
 	bool operator()(int i) const {
 		return (i == init);
 	}
 };
 
+struct mgt {
+	double d;
 
-/*
-	Metodi da testare:
-	eval
-*/
+	explicit mgt(double val) : d(val) {}
+	bool operator()(punto_int p) const {
+		return sqrt(p.x * p.x + p.y * p.y) > d;
+	}
+};
+
+struct equal_strlen {
+	bool operator()(pair_string p) const {
+		return p.s1.size() == p.s2.size();
+	}
+};
 
 
 int main() {
@@ -204,6 +214,12 @@ int main() {
 	keep_if_equal kie2(2);
 	assert(eval(s_i, kie) == 16);
 	assert(eval(s_i, kie2) == 4);
+
+	mgt mgt1(4);
+	assert(eval(s_pi, mgt1) == 3);
+
+	equal_strlen es;
+	assert(eval(s_ps, es) == 21);
 
 	cout << endl;
 
