@@ -85,10 +85,20 @@ struct mgt {
 };
 
 struct equal_strlen {
-	bool operator()(pair_string p) const {
+	bool operator()(const pair_string &p) const {
 		return p.s1.size() == p.s2.size();
 	}
 };
+
+struct even_len {
+	bool operator()(const string &p) const {
+		return p.size() % 2 == 0;
+	}
+};
+
+bool even_len2(const string &p) {
+	return p.size() % 2 == 0;
+}
 
 
 int main() {
@@ -104,7 +114,7 @@ int main() {
 	SparseMatrix<int> s_i(5,5,0);
 	SparseMatrix<int> s_i2(2,4,3);
 	SparseMatrix<double> s_d(5,5,1.1);
-	SparseMatrix<string> s_s(5,5,"");
+	SparseMatrix<string> s_s(5,5,"a");
 	SparseMatrix<punto> s_p(15,5,default_punto);
 	SparseMatrix<punto_int> s_pi(5,5,default_punto_int);
 	SparseMatrix<pair_string> s_ps(5,5,default_pair_string);
@@ -134,6 +144,10 @@ int main() {
 	s_d.add(0,0,2.4);
 	s_d.add(1,2,2.3);
 	s_d.add(4,4,5.4);
+
+	s_s.add(0,0,"un");
+	s_s.add(1,1,"due");
+	s_s.add(2,2,"du");
 
 	punto p1, p2, p3, p4;
 	p1.x = 1.2; p1.y = 1.2; p2.x = 2.2; p2.y = 2.2;
@@ -220,6 +234,10 @@ int main() {
 
 	equal_strlen es;
 	assert(eval(s_ps, es) == 21);
+
+	even_len ev;
+	assert(eval(s_s, ev) == 2);
+	assert(eval(s_s, even_len2) == 2);
 
 	cout << endl;
 
